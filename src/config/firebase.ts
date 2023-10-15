@@ -2,6 +2,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/analytics';
+import { getAuth } from 'firebase/auth';
 
 // initialize Firebase
 firebase.initializeApp({
@@ -14,7 +15,7 @@ firebase.initializeApp({
   measurementId: process.env.REACT_APP_FIREBASE_MSRMNT_ID,
 });
 
-const auth = firebase.auth();
+const auth = getAuth();
 const firestore = firebase.firestore();
 const analytics = firebase.analytics();
 

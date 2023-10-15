@@ -1,7 +1,6 @@
 import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import React from 'react';
-import { auth } from '../../firebase.config';
-
+import { auth } from '../../config/firebase';
 
 const SignIn = () => {
   const signInWinGoogle = () => {
