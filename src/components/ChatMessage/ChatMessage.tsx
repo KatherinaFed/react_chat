@@ -8,7 +8,7 @@ interface ChatMessageProps {
 
 function ChatMessage(props: ChatMessageProps) {
   const { text, uid, photoURL } = props.message;
-  console.log('user: ',auth.currentUser?.uid)
+  // console.log('user: ',auth.currentUser?.uid)
   console.log('uid: ',uid)
 
   const messageClass = uid === auth.currentUser?.uid ? 'sent' : 'received';
