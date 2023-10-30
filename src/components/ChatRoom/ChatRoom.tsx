@@ -2,41 +2,40 @@ import React, { useEffect, useRef, useState } from 'react';
 import { auth, firebase, firestore } from '../../config/firebase';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import ChatMessage from '../ChatMessage/ChatMessage';
-import { DocumentData, limit, orderBy, query } from 'firebase/firestore';
+import { DocumentData, Query, limit, orderBy, query } from 'firebase/firestore';
 import { Message } from '../../shared/types';
 import { convertDocToMessage } from '../../utils';
 
 const ChatRoom = () => {
   const [formValue, setFormValue] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
+  // const [messages, setMessages] = useState<Message[]>([]);
   const scroll: React.RefObject<HTMLElement> = useRef(null);
 
-  useEffect(() => {
-    const unsubscribe = subscribeMessages();
+  // useEffect(() => {
+  //   const unsubscribe = subscribeMessages();
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
 
-  const subscribeMessages = () => {
-    return firestore
-      .collection('message')
-      .orderBy('createdAt')
-      .limit(25)
-      .onSnapshot((snapshot) => {
-        const messages = snapshot.docs.map((doc) => convertDocToMessage(doc));
-        setMessages(messages);
-        scroll.current?.scrollIntoView({ behavior: 'smooth' });
-      });
-  };
+  // const subscribeMessages = () => {
+  //   return firestore
+  //     .collection('messages')
+  //     .orderBy('createdAt')
+  //     .limit(25)
+  //     .onSnapshot((snapshot) => {
+  //       console.log(snapshot.docs)
+  //       const messages = snapshot.docs.map((doc) => convertDocToMessage(doc));
+  //       // setMessages(messages);
+  //       scroll.current?.scrollIntoView({ behavior: 'smooth' });
+  //     });
+  // };
 
-  // const messageRef = firestore.collection('message');
+  const messagesRef = firestore.collection('messages');
+  const query: any = messagesRef.orderBy('createdAt').limit(25);
 
-  // const queryRef = query(messageRef, orderBy("createdAt"), limit(25));
-
-  // const [message] = useCollectionData(queryRef);
-  // console.log(message);
+  const [messages] = useCollectionData(query);
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +43,7 @@ const ChatRoom = () => {
     const uid = auth.currentUser?.uid;
     const photoURL = auth.currentUser?.photoURL;
 
-    await firestore.collection('message').add({
+    await firestore.collection('messages').add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
